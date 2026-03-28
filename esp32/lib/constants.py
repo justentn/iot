@@ -1,0 +1,5 @@
+GPIO_PIN_4 = 4
+GPIO_PIN_5 = 5
+GPIO_PIN_6 = 6
+
+ADC_PIN_36 = 36
