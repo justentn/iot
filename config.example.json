@@ -1,0 +1,13 @@
+{
+    "wifi": {
+        "ssid": "your_ssid",
+        "password": "your_password"
+    },
+    "api": {
+        "url": "http://your-backend:8000"
+    },
+    "pins": [
+        { "id": 36, "type": 0 },
+        { "id": 5, "type": 2 }
+    ]
+}

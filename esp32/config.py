@@ -1,10 +1,21 @@
+import json
 from lib.gpio.constants import *
 from lib.gpio.pin_type import PinType
 from lib.gpio.pin_wrapper import PinWrapper
 
-WIFI_SSID = ""
-WIFI_PASSWORD = ""
-PINS: list[PinWrapper] = [
-    PinWrapper(ADC_PIN_36, PinType.ADC),
-    PinWrapper(GPIO_PIN_5, PinType.GPIO_OUTPUT)
+
+def load_config():
+    with open('config.json') as f:
+        return json.load(f)
+
+
+config = load_config()
+
+WIFI_SSID = config['wifi']['ssid']
+WIFI_PASSWORD = config['wifi']['password']
+API_URL = config['api']['url']
+
+PINS = [
+    PinWrapper(p['id'], p['type'])
+    for p in config['pins']
 ]
