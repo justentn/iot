@@ -1,4 +1,4 @@
-from pin_type import PinType
+from lib.gpio.pin_type import PinType
 from machine import ADC, Pin
 
 
@@ -11,6 +11,12 @@ class PinWrapper:
         self.id = pin
         self.type = type
         self._init_pin()
+
+    def __str__(self):
+        return f'PinWrapper(pin={self.id}, type={self.type})'
+
+    def __repr__(self):
+        return f'PinWrapper(pin={self.id}, type={self.type})'
 
     def _init_pin(self):
         if self.type == PinType.ADC:

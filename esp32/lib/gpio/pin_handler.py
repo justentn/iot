@@ -1,7 +1,7 @@
 from machine import ADC, Pin
 from logger import Logger
-from pin_type import PinType
-from pin_wrapper import PinWrapper
+from lib.gpio.pin_type import PinType
+from lib.gpio.pin_wrapper import PinWrapper
 
 
 class PinHandler:
@@ -26,7 +26,7 @@ class PinHandler:
 
     def get_pin_value(self) -> int:
         """Gets the pins value.
-        
+
         Returns:
             The raw pin value.
         """
@@ -36,6 +36,6 @@ class PinHandler:
 
     def toggle(self):
         """Toggles the pin state from HIGH to LOW or LOW to HIGH"""
-        
+
         if self.type == PinType.GPIO_OUTPUT:
             self.pin.value(not self.pin.value())

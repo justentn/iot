@@ -1,13 +1,14 @@
-from pin_handler import PinHandler
+from lib.gpio.pin_handler import PinHandler
 from logger import Logger
-from pin_type import PinType
-from pin_wrapper import PinWrapper
+from lib.gpio.pin_type import PinType
+from lib.gpio.pin_wrapper import PinWrapper
 
 
 class Esp32Board:
     """A singleton object that represents an ESP32 board.
     Initializes a gpio manager used to interface with ADC / GPIO pins
     """
+
     _instance = None
     pins: dict[int, PinHandler]
     logger: Logger
@@ -20,12 +21,23 @@ class Esp32Board:
             for p in pins:
                 pin_handler = PinHandler(p.id, p.type)
                 cls._instance.pins[pin_handler.id] = pin_handler
-            cls._instance.logger.info('Esp32Board', 'ESP32 board initialized')
-        print(f'stored pins: {list(cls._instance.pins.keys())}')  # ← add this
+
+        pin_strs = ', '.join(
+            [f'Pin(id={p.id}, type={PinType.name(p.type)}' for p in pins])
+        cls._instance.logger.info(
+            'Esp32Board', f'Initialized pins [{pin_strs}]')
+
         return cls._instance
 
     def get_pin_value(self, pin: int) -> int:
-        print(pin)
+        """Gets the raw pin value
+
+        Args:
+            pin: The pin to retrieve the value for.
+        Returns:
+            The pins value.
+        """
+
         handler = self._instance.pins.get(pin)
         if handler is None:
             self._instance.logger.error('Esp32Board', f'PIN {pin} not found')
@@ -33,6 +45,12 @@ class Esp32Board:
         return handler.get_pin_value()
 
     def toggle_pin(self, pin: int) -> None:
+        """Toggles the pins state
+
+        Args:
+            pin: The pin to toggle.
+        """
+
         handler = self._instance.pins.get(pin)
         if handler is None:
             self._instance.logger.error('Esp32Board', f'PIN {pin} not found')
