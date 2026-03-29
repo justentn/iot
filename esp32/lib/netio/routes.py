@@ -8,9 +8,18 @@ def register_routes(server, board: Esp32Board):
         voltage = (raw / 4095) * 3.3
         moisture = (1 - (raw - 1500) / (4095 - 1500)) * 100
         moisture = max(0, min(100, moisture))
-        return {'raw': raw, 'voltage': round(voltage, 2), 'moisture': round(moisture, 1)}
+        return {
+            'raw': raw,
+            'voltage': round(voltage, 2),
+            'moisture': round(moisture, 1)
+        }
 
     @server.route('/toggle', method='POST')
-    def toggle():
-        board.toggle_pin(5)
-        return {'status': 'ok'}
+    def toggle(request: dict):
+        pin = request.get('pin')
+
+        if pin is None:
+            return {'error': 'pin is required'}
+
+        state = board.toggle_pin(pin)
+        return {'status': 'ok', 'state': state}

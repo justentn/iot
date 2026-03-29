@@ -1,4 +1,3 @@
-from boot import connect_wifi
 from lib.gpio.esp32_board import Esp32Board
 from lib.gpio.constants import *
 from lib.netio.http_server import HttpServer

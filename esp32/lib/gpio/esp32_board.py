@@ -44,15 +44,17 @@ class Esp32Board:
             return -1
         return handler.get_pin_value()
 
-    def toggle_pin(self, pin: int) -> None:
+    def toggle_pin(self, pin: int) -> bool:
         """Toggles the pins state
 
         Args:
             pin: The pin to toggle.
+        Returns:
+            The current state of the pin
         """
 
         handler = self._instance.pins.get(pin)
         if handler is None:
             self._instance.logger.error('Esp32Board', f'PIN {pin} not found')
             return
-        handler.toggle()
+        return handler.toggle()

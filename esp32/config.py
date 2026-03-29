@@ -1,6 +1,5 @@
 import json
 from lib.gpio.constants import *
-from lib.gpio.pin_type import PinType
 from lib.gpio.pin_wrapper import PinWrapper
 
 

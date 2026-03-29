@@ -34,8 +34,11 @@ class PinHandler:
             return self.pin.read()
         return self.pin.value()
 
-    def toggle(self):
+    def toggle(self) -> bool:
         """Toggles the pin state from HIGH to LOW or LOW to HIGH"""
 
+        state = not self.pin.value()
         if self.type == PinType.GPIO_OUTPUT:
-            self.pin.value(not self.pin.value())
+            self.pin.value(state)
+
+        return state
