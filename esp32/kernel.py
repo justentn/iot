@@ -1,16 +1,37 @@
+import _thread
 from logger import Logger
+from lib.gpio.esp32_board import Esp32Board
+from lib.gpio.pin_wrapper import PinWrapper
+from lib.netio.http_server import HttpServer
+from lib.netio.routes import register_routes
 
 logger = Logger()
 
 
 class Kernel:
-    """A singleton class used to interface with the various pins and
-    send data upstream."""
-
+    """The kernel is the main processing object used to
+    process incoming and outgoing data upstream."""
     _instance = None
-    _board = 
+    _board = None
 
-    def __call__(cls):
-        if cls not in cls._instance:
-            cls._instance = super(Kernel, cls).__call__()
-        return cls
+    def __new__(cls, *args, **kwargs):
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+            cls._instance._initialized = False
+
+        return cls._instance
+
+    def __init__(self, pins: list[PinWrapper] = None):
+        if not getattr(self, "_initialized", False):
+            if pins is None:
+                return
+
+            self._board = Esp32Board(pins)
+            self._init_http_server(self._board)
+            self._initialized = True
+            print("Kernel Started.")
+
+    def _init_http_server(self, board):
+        server = HttpServer(port=80)
+        register_routes(server, board)
+        _thread.start_new_thread(server.start, ())

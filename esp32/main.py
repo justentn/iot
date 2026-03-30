@@ -1,18 +1,11 @@
-from lib.gpio.esp32_board import Esp32Board
-from lib.gpio.constants import *
-from lib.netio.http_server import HttpServer
 from config import PINS
-from lib.netio.routes import register_routes
+from kernel import Kernel
 import time
 import _thread
 
 
-esp32_board = Esp32Board(PINS)
+kernel = Kernel(PINS)
 start = time.ticks_ms()
-server = HttpServer(port=80)
-
-register_routes(server, esp32_board)
-_thread.start_new_thread(server.start, ())
 
 while True:
     elapsed = time.ticks_diff(time.ticks_ms(), start)
