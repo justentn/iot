@@ -2,7 +2,7 @@ from lib.gpio.esp32_board import Esp32Board
 
 
 def register_routes(server, board: Esp32Board):
-    @server.route('/moisture')
+    @server.route('/api/moisture')
     def get_moisture():
         raw = board.get_pin_value(36)
         voltage = (raw / 4095) * 3.3
@@ -14,7 +14,7 @@ def register_routes(server, board: Esp32Board):
             'moisture': round(moisture, 1)
         }
 
-    @server.route('/toggle', method='POST')
+    @server.route('/api/toggle', method='POST')
     def toggle(request: dict):
         pin = request.get('pin')
 

@@ -1,7 +1,6 @@
-from lib.gpio.pin_handler import PinHandler
+from lib.gpio.pin_wrapper import PinWrapper
 from logger import Logger
 from lib.gpio.pin_type import PinType
-from lib.gpio.pin_wrapper import PinWrapper
 
 
 class Esp32Board:
@@ -10,7 +9,7 @@ class Esp32Board:
     """
 
     _instance = None
-    pins: dict[int, PinHandler]
+    pins: dict[int, PinWrapper]
     logger: Logger
 
     def __new__(cls, pins: list[PinWrapper] = None):
@@ -19,7 +18,7 @@ class Esp32Board:
             cls._instance.pins = {}
             cls._instance.logger = Logger()
             for p in pins:
-                pin_handler = PinHandler(p.id, p.type)
+                pin_handler = PinWrapper(p.id, p.type)
                 cls._instance.pins[pin_handler.id] = pin_handler
 
         pin_strs = ', '.join(
@@ -42,7 +41,7 @@ class Esp32Board:
         if handler is None:
             self._instance.logger.error('Esp32Board', f'PIN {pin} not found')
             return -1
-        return handler.get_pin_value()
+        return handler.read()
 
     def toggle_pin(self, pin: int) -> bool:
         """Toggles the pins state

@@ -13,8 +13,9 @@ config = load_config()
 WIFI_SSID = config['wifi']['ssid']
 WIFI_PASSWORD = config['wifi']['password']
 API_URL = config['api']['url']
-
 PINS = [
     PinWrapper(p['id'], p['type'])
     for p in config['pins']
 ]
+MQTT_HOST = config['mqtt']['host']
+MQTT_PORT = config['mqtt']['port']

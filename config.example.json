@@ -9,5 +9,6 @@
     "pins": [
         { "id": 36, "type": 0 },
         { "id": 5, "type": 2 }
-    ]
+    ],
+    "mqtt_host": "mqtt_host",
 }
